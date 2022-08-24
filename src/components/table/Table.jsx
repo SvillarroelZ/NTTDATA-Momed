@@ -3,6 +3,9 @@ import "./style.css";
 // import { useReactToPrint, PrintContextConsumer, ReactToPrint } from "react-to-print";
 // import ComponentToPrint from '../PDF/ComponentToPrint'
 import { saveAs } from "file-saver";
+import Pagination from '@mui/material/Pagination';
+import { Grid } from '@mui/material';
+
 
 const Table = ({ infoTable, infoProfessional }) => {
   // const componentRef = useRef();
@@ -19,8 +22,19 @@ const Table = ({ infoTable, infoProfessional }) => {
     console.log(1);
   };
 
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = React.useState(0);
+
+  let page_url = 1
+
+  const handleChangePage = (event, newPage) => {
+      setPage(newPage)
+  }
+
+
   if (infoTable) {
     return (
+        <>
       <section className="cont-table">
         <table>
           <thead>
@@ -124,6 +138,24 @@ const Table = ({ infoTable, infoProfessional }) => {
           </tbody>
         </table>
       </section>
+      <Grid className="mt-3 mb-3 mr-3"
+                    container
+                    justify="flex-end"
+                    alignItems="flex-end">
+                    <Pagination
+                        variant="outlined"
+                        defaultPage={parseInt(page_url)}
+                        count={Math.ceil(infoTable.length / 10)}
+                        rowsPerPage={rowsPerPage}
+                        color="primary"
+                        shape="rounded"
+                        total={infoTable.length}
+                        page={page}
+                        onChange={handleChangePage}
+                    />
+                </Grid>
+
+</>
     );
   }
 };
